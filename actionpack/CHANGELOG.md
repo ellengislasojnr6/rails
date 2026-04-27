@@ -1,3 +1,17 @@
+*   Fix nested route constraints support.
+
+    Nested constraints are now properly combined:
+
+    ```ruby
+    constraints SomeIPConstraint do
+      authenticate :admin_user, ->(user) { user.can_access_sidekiq? } do
+        mount Sidekiq::Web => '/sidekiq', :constraints => SomeReadOnlyConstraint
+      end
+    end
+    ```
+
+    *Petris Fernandes*
+
 *   Fix response steam buffers compatibility with `IO.copy_stream`.
 
     `IO.copy_stream(src, response.stream)` raised `TypeError: no implicit
